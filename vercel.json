@@ -6,8 +6,8 @@
   ],
   "headers": [
     {
-      "source": "/fft-logo.:ext",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "source": "/:file(fft-logo|hero-[a-z]+).:ext",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
     }
   ]
 }
