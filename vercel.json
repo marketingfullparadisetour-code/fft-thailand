@@ -1,13 +1,6 @@
 {
-  "cleanUrls": true,
   "rewrites": [
     { "source": "/ph", "destination": "/index.html" },
     { "source": "/id", "destination": "/index.html" }
-  ],
-  "headers": [
-    {
-      "source": "/:file(fft-logo|hero-[a-z]+).:ext",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
-    }
   ]
 }
