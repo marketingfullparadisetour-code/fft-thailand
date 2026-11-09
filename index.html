@@ -133,6 +133,9 @@ svg.ico{width:22px;height:22px;stroke:var(--green-deep);stroke-width:1.6;fill:no
 .term .chk{flex-shrink:0;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px;font-size:.66rem;font-weight:800}
 .term .chk svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .term b{color:var(--sun-deep);font-weight:700}
+.inp.sel{-webkit-appearance:none;appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238E8E93' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 15px center;padding-right:40px;cursor:pointer}
+.inp.sel.empty{color:var(--ink-3)}
+.inp.sel option{color:var(--ink)}
 .term-sub{font-size:.72rem;font-weight:800;color:var(--sun-deep);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 10px;padding-top:14px;border-top:1px solid rgba(74,59,0,.12)}
 .form-card{background:var(--sun-wash);border:1px solid rgba(254,223,4,.3);border-radius:var(--radius);padding:22px 20px}
 .field{margin-bottom:15px}.field:last-of-type{margin-bottom:0}
@@ -274,11 +277,8 @@ svg.ico{width:22px;height:22px;stroke:var(--green-deep);stroke-width:1.6;fill:no
         <div class="term"><span class="chk"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span id="term-quota">—</span></div>
         <div class="term" id="term-special-row" style="display:none"><span class="chk"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span id="term-special">—</span></div>
 
-        <div class="term-sub" data-i18n="reqHead">Syarat posting konten</div>
-        <div class="term"><span class="chk">1</span><span id="req1-tx">—</span></div>
-        <div class="term"><span class="chk">2</span><span data-i18n="req2">—</span></div>
-        <div class="term"><span class="chk">3</span><span id="req3-tx">—</span></div>
-        <div class="term"><span class="chk">4</span><span data-i18n="req4">—</span></div>
+        <div class="term-sub" data-i18n="reqHead">Syarat pendaftaran FFT</div>
+        <div id="req-list"></div>
       </div>
     </div>
 
@@ -289,7 +289,12 @@ svg.ico{width:22px;height:22px;stroke:var(--green-deep);stroke-width:1.6;fill:no
         <div class="field"><label><span data-i18n="fAgent">Nama Travel / Agent</span> <span class="req">*</span></label><input id="f-agent" class="inp" type="text" data-i18n-ph="phAgent" placeholder=""></div>
         <div class="field"><label><span data-i18n="fWa">No. WhatsApp</span> <span class="req">*</span></label><div class="prefix"><div class="code" id="f-wa-code">+62</div><input id="f-wa" class="inp" type="tel" placeholder=""></div></div>
         <div class="field"><label><span data-i18n="fEmail">Email</span> <span class="req">*</span></label><input id="f-email" class="inp" type="email" placeholder="email@domain.com"></div>
+        <div class="field"><label><span data-i18n="fOrg">Keanggotaan Asosiasi</span> <span class="req">*</span></label>
+          <select id="f-org" class="inp sel" onchange="toggleOrgOther()"></select>
+          <input id="f-org-other" class="inp" type="text" data-i18n-ph="phOrgOther" placeholder="" style="display:none;margin-top:8px">
+          <div class="hint" data-i18n="orgHint">Asosiasi travel tempat agent Anda terdaftar sebagai anggota.</div></div>
         <div class="row2"><div class="field"><label>Instagram <span class="req">*</span></label><input id="f-ig" class="inp" type="text" placeholder="@username"></div><div class="field"><label>TikTok <span class="req">*</span></label><input id="f-tiktok" class="inp" type="text" placeholder="@username"></div></div>
+        <div class="field"><label><span data-i18n="fFb">Fanpage Facebook</span> <span class="req">*</span></label><input id="f-fb" class="inp" type="text" data-i18n-ph="phFb" placeholder=""></div>
         <div class="field" style="margin-top:-6px"><div class="hint" data-i18n="sosmedHint">Akun yang akan dipakai untuk posting konten.</div></div>
         <div class="field"><label><span data-i18n="fKota">Asal Kota</span> <span class="req">*</span></label><input id="f-kota" class="inp" type="text" data-i18n-ph="phKota" placeholder=""></div>
         <button class="form-submit" onclick="doSubmit()" data-i18n="btnSubmit">Kirim Pendaftaran</button>
@@ -339,14 +344,16 @@ var MARKET_CFG = {
     brand:'Fullmoon Paradise Tour',
     email:'marketingfullparadisetour@gmail.com',
     logo:'https://fullmoonparadisetour.com/wp-content/uploads/2026/07/FULLMOON-LOGO-NEWs-1.png',
-    wa:'6285964355542'
+    wa:'6285964355542',
+    orgs:['ASITA','ASTINDO','AMPHURI','HIMPUH']
   },
   ph: {
     lang:'en', phoneCode:'+63', phonePh:'9xxxxxxxxx',
     brand:'Luxury Budget Tour',
     email:'luxurybudgettour@gmail.com',
     logo:'https://fullmoonparadisetour.com/wp-content/uploads/2026/09/Luxury-Budget-Tour-Transparent-Background-1.png',
-    wa:'6285964355542'
+    wa:'6285964355542',
+    orgs:['PTAA','NAITAS']
   }
 };
 var MARKET = MARKET_CFG[MARKET_RAW] ? MARKET_RAW : 'id';
@@ -391,17 +398,25 @@ var I18N = {
     term1:'Program <b>gratis</b>, di luar biaya tiket pesawat pulang-pergi.',
     termQuota:'1 travel agent untuk 1 perwakilan. Kuota terbatas <b>{seat} kursi</b>.',
     termSpecial:'Khusus travel agent yang <b>sudah pernah mengirim tamu ke {brand}</b> dan <b>hanya bekerja sama dengan {brand}</b>.',
-    reqHead:'Syarat posting konten',
-    req1:'Setiap agent <b>wajib memposting konten</b> yang disiapkan dan diberikan oleh tim {brand}.',
-    req2:'Konten diupload di akun <b>Instagram dan TikTok</b> milik travel agent Anda — <b>keduanya wajib</b>.',
-    req3:'Setelah mendaftar, <b>tim {brand} akan follow up</b> via WhatsApp untuk mengirim konten dan mengarahkan persyaratannya.',
-    req4:'Kursi Anda <b>dikonfirmasi setelah postingan diverifikasi</b> oleh tim kami.',
+    reqHead:'Syarat pendaftaran FFT',
+    reqs:[
+      'Travel agent <b>terdaftar sebagai anggota asosiasi resmi</b> (ASITA, ASTINDO, atau asosiasi lainnya) dan mencantumkannya di formulir.',
+      '<b>Follow</b> akun Instagram <b>@freefamtripthailand</b>.',
+      '<b>Like, komentar, dan repost</b> video promosi di akun Instagram <b>@freefamtripthailand</b>.',
+      'Memposting <b>3 video paket {brand}</b> yang disediakan oleh tim {brand}, menggunakan <b>caption dan hashtag</b> yang telah ditentukan. <b>Video tidak boleh dihapus.</b>',
+      'Video diunggah di akun <b>Facebook, Instagram, dan TikTok</b> milik travel agent Anda — <b>ketiganya wajib</b>.',
+      'Setelah mendaftar, <b>tim {brand} akan menghubungi Anda via WhatsApp</b> untuk konfirmasi pendaftaran.',
+      'Agent wajib mengikuti <b>sesi product knowledge online</b> bersama tim {brand}.'
+    ],
     secForm:'Isi data pendaftaran',
     fNama:'Nama Lengkap', fAgent:'Nama Travel / Agent', fWa:'No. WhatsApp', fEmail:'Email', fKota:'Asal Kota',
     phNama:'Nama lengkap', phAgent:'Nama perusahaan travel', phKota:'Kota asal',
-    sosmedHint:'Akun Instagram &amp; TikTok travel agent yang akan dipakai untuk posting konten.',
+    sosmedHint:'Akun Instagram, TikTok, dan Facebook travel agent yang akan dipakai untuk memposting video paket.',
+    fOrg:'Keanggotaan Asosiasi', orgPick:'Pilih asosiasi', orgOther:'Lainnya',
+    phOrgOther:'Tulis nama asosiasi', orgHint:'Asosiasi travel tempat agent Anda terdaftar sebagai anggota.',
+    fFb:'Fanpage Facebook', phFb:'Nama atau link fanpage travel',
     btnSubmit:'Kirim Pendaftaran',
-    errIncompleteT:'Data belum lengkap', errIncompleteD:'Lengkapi semua kolom bertanda (*) dengan benar, termasuk Instagram & TikTok.',
+    errIncompleteT:'Data belum lengkap', errIncompleteD:'Lengkapi semua kolom bertanda (*) dengan benar, termasuk asosiasi, Instagram, TikTok, dan Facebook.',
     errTimeoutT:'Server tidak merespon', errTimeoutD:'Coba beberapa saat lagi atau hubungi admin via WhatsApp.',
     errFailT:'Gagal mengirim', errFailD:'Silakan coba lagi.',
     errFullT:'Kuota penuh', errFullD:'Jadwal ini sudah penuh. Silakan pilih jadwal lain.',
@@ -409,10 +424,10 @@ var I18N = {
     sTitle:'Pendaftaran terkirim!',
     sSub:'Terima kasih, pendaftaran Anda untuk <b>Fullmoon Fam Trip {p}</b> sudah kami terima.',
     sKodeLabel:'Kode Booking',
-    sNote:'<b>Tim kami akan segera menghubungi Anda</b> via WhatsApp untuk mengirim konten yang wajib diposting di Instagram &amp; TikTok Anda. Kursi dikonfirmasi setelah postingan diverifikasi. Mohon pantau pesan masuk Anda.',
+    sNote:'<b>Tim kami akan segera menghubungi Anda</b> via WhatsApp untuk konfirmasi pendaftaran, pengiriman 3 video paket, dan jadwal sesi product knowledge online. Mohon pantau pesan masuk Anda.',
     sWaBtn:'Konfirmasi via WhatsApp',
     sBack:'← Kembali ke jadwal famtrip',
-    waMsg:'Halo Admin {brand} 👋\nSaya baru mendaftar Fullmoon Fam Trip Thailand {p}:\n• Kode Booking : {k}\n• Nama : {n}\n• Travel/Agent : {a}\n• WhatsApp : {w}\n• Instagram : @{ig}\n• TikTok : @{tt}\n• Asal Kota : {c}\n\nMohon dikirimkan konten untuk saya posting ya, terima kasih!'
+    waMsg:'Halo Admin {brand} 👋\nSaya baru mendaftar Fullmoon Fam Trip Thailand {p}:\n• Kode Booking : {k}\n• Nama : {n}\n• Travel/Agent : {a}\n• WhatsApp : {w}\n• Asosiasi : {o}\n• Instagram : @{ig}\n• TikTok : @{tt}\n• Facebook : {fb}\n• Asal Kota : {c}\n\nMohon info konfirmasi pendaftarannya ya, terima kasih!'
   },
   en: {
     organizedBy:'Organized by',
@@ -447,17 +462,25 @@ var I18N = {
     term1:'The program is <b>free of charge</b>, excluding round-trip airfare.',
     termQuota:'One representative per travel agency. Limited to <b>{seat} seats</b>.',
     termSpecial:'Only for travel agents who have <b>already sent guests to {brand}</b> and <b>work exclusively with {brand}</b>.',
-    reqHead:'Content posting requirement',
-    req1:'Every agent is <b>required to post the content</b> prepared and provided by the {brand} team.',
-    req2:'The content must be uploaded to your travel agency\u2019s <b>Instagram and TikTok</b> accounts — <b>both are required</b>.',
-    req3:'After you register, <b>the {brand} team will follow up</b> via WhatsApp to send the content and guide you through the requirement.',
-    req4:'Your seat is <b>confirmed once your posts are verified</b> by our team.',
+    reqHead:'FFT registration requirements',
+    reqs:[
+      'Your agency is <b>a registered member of an official travel association</b> and states it in the form.',
+      '<b>Follow</b> the Instagram account <b>@freefamtripthailand</b>.',
+      '<b>Like, comment on and repost</b> the promotional video on <b>@freefamtripthailand</b>.',
+      'Post the <b>3 {brand} package videos</b> provided by the {brand} team, using the <b>caption and hashtags</b> supplied. <b>The videos must not be deleted.</b>',
+      'Upload the videos to your agency\u2019s <b>Facebook, Instagram and TikTok</b> accounts — <b>all three are required</b>.',
+      'After you register, <b>the {brand} team will contact you via WhatsApp</b> to confirm your registration.',
+      'Attend an <b>online product knowledge session</b> with the {brand} team.'
+    ],
     secForm:'Registration form',
     fNama:'Full Name', fAgent:'Travel Agency Name', fWa:'WhatsApp Number', fEmail:'Email', fKota:'City',
     phNama:'Your full name', phAgent:'Your travel agency name', phKota:'Your city',
-    sosmedHint:'Your agency\u2019s Instagram &amp; TikTok accounts that will be used to post the content.',
+    sosmedHint:'Your agency\u2019s Instagram, TikTok and Facebook accounts that will be used to post the package videos.',
+    fOrg:'Association Membership', orgPick:'Select association', orgOther:'Other',
+    phOrgOther:'Type the association name', orgHint:'The travel association your agency is a member of.',
+    fFb:'Facebook Page', phFb:'Your agency\u2019s Facebook page name or link',
     btnSubmit:'Submit Registration',
-    errIncompleteT:'Incomplete data', errIncompleteD:'Please fill in all fields marked (*) correctly, including Instagram & TikTok.',
+    errIncompleteT:'Incomplete data', errIncompleteD:'Please fill in all fields marked (*) correctly, including association, Instagram, TikTok and Facebook.',
     errTimeoutT:'Server not responding', errTimeoutD:'Please try again shortly or contact our admin on WhatsApp.',
     errFailT:'Submission failed', errFailD:'Please try again.',
     errFullT:'Fully booked', errFullD:'This schedule is fully booked. Please choose another schedule.',
@@ -465,10 +488,10 @@ var I18N = {
     sTitle:'Registration submitted!',
     sSub:'Thank you — we have received your registration for <b>Fullmoon Fam Trip {p}</b>.',
     sKodeLabel:'Booking Code',
-    sNote:'<b>Our team will contact you shortly</b> via WhatsApp to send the content you need to post on your Instagram &amp; TikTok. Your seat is confirmed once the posts are verified. Please keep an eye on your messages.',
+    sNote:'<b>Our team will contact you shortly</b> via WhatsApp to confirm your registration, send the 3 package videos and schedule the online product knowledge session. Please keep an eye on your messages.',
     sWaBtn:'Confirm via WhatsApp',
     sBack:'← Back to famtrip schedule',
-    waMsg:'Hello {brand} Admin 👋\nI have just registered for the Fullmoon Fam Trip Thailand {p}:\n• Booking Code : {k}\n• Name : {n}\n• Travel Agency : {a}\n• WhatsApp : {w}\n• Instagram : @{ig}\n• TikTok : @{tt}\n• City : {c}\n\nPlease send me the content to post, thank you!'
+    waMsg:'Hello {brand} Admin 👋\nI have just registered for the Fullmoon Fam Trip Thailand {p}:\n• Booking Code : {k}\n• Name : {n}\n• Travel Agency : {a}\n• WhatsApp : {w}\n• Association : {o}\n• Instagram : @{ig}\n• TikTok : @{tt}\n• Facebook : {fb}\n• City : {c}\n\nKindly confirm my registration, thank you!'
   }
 };
 var T = I18N[LANG];
@@ -549,27 +572,27 @@ var ITIN = {
 var PERIODS_DATA={
   februari:{label:'Februari 2027',labelEn:'February 2027',bulan:'Februari',bulanEn:'February',abbr:'FEB',
     code:'BKK07',date:'22 - 25',durasi:'4D3N',seat:25,
-    img:'hero-feb.webp'},
+    img:'https://cdn.jsdelivr.net/gh/marketingfullparadisetour-code/fft-thailand@main/hero-feb.webp'},
 
   maret:{label:'Maret 2027',labelEn:'March 2027',bulan:'Maret',bulanEn:'March',abbr:'MAR',
     code:'BKK01',date:'25 - 28',durasi:'4D3N',seat:25,
-    img:'hero-mar.webp'},
+    img:'https://cdn.jsdelivr.net/gh/marketingfullparadisetour-code/fft-thailand@main/hero-mar.webp'},
 
   april:{label:'April 2027',labelEn:'April 2027',bulan:'April',bulanEn:'April',abbr:'APR',
     code:'BKK02',date:'22 - 25',durasi:'4D3N',seat:25,
-    img:'hero-apr.webp'},
+    img:'https://cdn.jsdelivr.net/gh/marketingfullparadisetour-code/fft-thailand@main/hero-apr.webp'},
 
   agustus:{label:'Agustus 2027',labelEn:'August 2027',bulan:'Agustus',bulanEn:'August',abbr:'AUG',
     code:'BKK09',date:'26 - 29',durasi:'4D3N',seat:25,
-    img:'hero-agu.webp'},
+    img:'https://cdn.jsdelivr.net/gh/marketingfullparadisetour-code/fft-thailand@main/hero-agu.webp'},
 
   september:{label:'September 2027',labelEn:'September 2027',bulan:'September',bulanEn:'September',abbr:'SEP',
     code:'BKK01',date:'23 - 26',durasi:'4D3N',seat:25,
-    img:'hero-sep.webp'},
+    img:'https://cdn.jsdelivr.net/gh/marketingfullparadisetour-code/fft-thailand@main/hero-sep.webp'},
 
   oktober:{label:'Oktober 2027',labelEn:'October 2027',bulan:'Oktober',bulanEn:'October',abbr:'OCT',
     code:'CNX02',date:'28 - 31',durasi:'4D3N',seat:30,special:true,
-    img:'hero-okt.webp'}
+    img:'https://cdn.jsdelivr.net/gh/marketingfullparadisetour-code/fft-thailand@main/hero-okt.webp'}
 };
 var ORDER=['februari','maret','april','agustus','september','oktober'];
 var current=null;
@@ -599,8 +622,11 @@ function applyI18n(){
   });
 
   document.getElementById('b4d-tx').innerHTML = t('b4d');
-  document.getElementById('req1-tx').innerHTML = t('req1');
-  document.getElementById('req3-tx').innerHTML = t('req3');
+  document.getElementById('req-list').innerHTML = T.reqs.map(function(r,i){
+    return '<div class="term"><span class="chk">'+(i+1)+'</span><span>'+r.split('{brand}').join(MCFG.brand)+'</span></div>';
+  }).join('');
+  var sel=document.getElementById('f-org');
+  sel.innerHTML='<option value="">'+t('orgPick')+'</option>'+MCFG.orgs.map(function(o){return '<option>'+o+'</option>';}).join('')+'<option value="__other">'+t('orgOther')+'</option>';
   document.getElementById('d-special-desc').innerHTML = t('specialDesc');
   document.getElementById('term-special').innerHTML = t('termSpecial');
 
@@ -666,7 +692,8 @@ function openPeriode(k){
 
   var src=pImg(p);
   document.getElementById('d-hero').innerHTML = src ? '<img src="'+src+'" alt="'+pRoute(p)+'">' : '<div class="ph-hint">Hero '+pBulan(p)+'<br>1080 × 1080 px</div>';
-  ['f-nama','f-agent','f-wa','f-email','f-ig','f-tiktok','f-kota'].forEach(function(id){var el=document.getElementById(id);el.value='';el.classList.remove('err');});
+  ['f-nama','f-agent','f-wa','f-email','f-org','f-org-other','f-ig','f-tiktok','f-fb','f-kota'].forEach(function(id){var el=document.getElementById(id);el.value='';el.classList.remove('err');});
+  toggleOrgOther();
   var acc=document.getElementById('acc-fasilitas');acc.classList.remove('open');acc.querySelector('.acc-body').style.maxHeight=null;
   document.getElementById('landing').style.display='none';
   document.getElementById('detail').classList.add('active');
@@ -680,6 +707,7 @@ function goLanding(){
   window.scrollTo(0,0);
   if(location.hash) history.replaceState(null,'',location.pathname+location.search);
 }
+function toggleOrgOther(){var o=document.getElementById('f-org-other'),s=document.getElementById('f-org');s.classList.toggle('empty',!s.value);var show=s.value==='__other';o.style.display=show?'block':'none';if(!show){o.value='';o.classList.remove('err');}}
 function scrollForm(){document.getElementById('form').scrollIntoView({behavior:'smooth',block:'start'});}
 function toggleAcc(id){var acc=document.getElementById(id),body=acc.querySelector('.acc-body');if(acc.classList.contains('open')){body.style.maxHeight=null;acc.classList.remove('open');}else{acc.classList.add('open');body.style.maxHeight=body.scrollHeight+'px';}}
 
@@ -690,9 +718,10 @@ var submitting=false;
 
 function doSubmit(){
   if(submitting) return;
-  ['f-nama','f-agent','f-wa','f-email','f-ig','f-tiktok','f-kota'].forEach(function(id){document.getElementById(id).classList.remove('err');});
+  ['f-nama','f-agent','f-wa','f-email','f-org','f-org-other','f-ig','f-tiktok','f-fb','f-kota'].forEach(function(id){document.getElementById(id).classList.remove('err');});
   V.nama=gv('f-nama');V.agent=gv('f-agent');V.email=gv('f-email');V.kota=gv('f-kota');
-  V.ig=gv('f-ig').replace(/^@/,'');V.tiktok=gv('f-tiktok').replace(/^@/,'');
+  V.ig=gv('f-ig').replace(/^@/,'');V.tiktok=gv('f-tiktok').replace(/^@/,'');V.fb=gv('f-fb');
+  var orgSel=gv('f-org');V.org=orgSel==='__other'?gv('f-org-other'):orgSel;
   var waNum=gv('f-wa').replace(/[^0-9]/g,'');if(waNum.charAt(0)==='0')waNum=waNum.slice(1);
   V.wa=MCFG.phoneCode+waNum;
   var bad=false;
@@ -702,12 +731,15 @@ function doSubmit(){
   if(!V.kota){document.getElementById('f-kota').classList.add('err');bad=true;}
   if(!V.ig){document.getElementById('f-ig').classList.add('err');bad=true;}
   if(!V.tiktok){document.getElementById('f-tiktok').classList.add('err');bad=true;}
+  if(!V.fb){document.getElementById('f-fb').classList.add('err');bad=true;}
+  if(!orgSel){document.getElementById('f-org').classList.add('err');bad=true;}
+  else if(!V.org){document.getElementById('f-org-other').classList.add('err');bad=true;}
   if(!/^\S+@\S+\.\S+$/.test(V.email)){document.getElementById('f-email').classList.add('err');bad=true;}
   if(bad){Swal.fire({icon:'warning',title:t('errIncompleteT'),text:t('errIncompleteD'),confirmButtonColor:'#21C063'});return;}
 
   submitting=true;
   document.getElementById('loader').classList.add('show');
-  var payload={action:'submit',market:MARKET,periode:current,nama:V.nama,agent:V.agent,wa:V.wa,email:V.email,ig:V.ig,tiktok:V.tiktok,kota:V.kota};
+  var payload={action:'submit',market:MARKET,periode:current,nama:V.nama,agent:V.agent,wa:V.wa,email:V.email,ig:V.ig,tiktok:V.tiktok,fb:V.fb,org:V.org,kota:V.kota};
   var done=false;
   function finish(){done=true;submitting=false;clearTimeout(wd);document.getElementById('loader').classList.remove('show');}
   var wd=setTimeout(function(){if(done)return;finish();alertErr('errTimeoutT','errTimeoutD');},30000);
@@ -740,7 +772,7 @@ function onDone(kode){
   var p=PERIODS_DATA[current];
   document.getElementById('s-sub').innerHTML=t('sSub',{p:pDate(p)});
   document.getElementById('s-kode').textContent=kode||'—';
-  var msg=encodeURIComponent(t('waMsg',{p:pDate(p)+' ('+p.code+' '+pRoute(p)+')',k:(kode||'-'),n:V.nama,a:V.agent,w:V.wa,ig:V.ig,tt:V.tiktok,c:V.kota}));
+  var msg=encodeURIComponent(t('waMsg',{p:pDate(p)+' ('+p.code+' '+pRoute(p)+')',k:(kode||'-'),n:V.nama,a:V.agent,w:V.wa,o:V.org,ig:V.ig,tt:V.tiktok,fb:V.fb,c:V.kota}));
   document.getElementById('s-wa').href='https://wa.me/'+ADMIN_WA+'?text='+msg;
   document.getElementById('success').classList.add('show');window.scrollTo(0,0);
 }
