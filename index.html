@@ -136,6 +136,11 @@ svg.ico{width:22px;height:22px;stroke:var(--green-deep);stroke-width:1.6;fill:no
 .inp.sel{-webkit-appearance:none;appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238E8E93' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 15px center;padding-right:40px;cursor:pointer}
 .inp.sel.empty{color:var(--ink-3)}
 .inp.sel option{color:var(--ink)}
+.req-phase{display:flex;align-items:center;gap:8px;margin:14px 0 10px;font-size:.74rem;font-weight:800;color:var(--green-deep);text-transform:uppercase;letter-spacing:.04em}
+.req-phase:first-child{margin-top:0}
+.req-phase .ph-step{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:50px;background:var(--green-wash);border:1px solid rgba(33,192,99,.3);font-size:.62rem;letter-spacing:.06em}
+.req-phase .ph-step:before{content:'TAHAP\00a0'}
+html[lang=en] .req-phase .ph-step:before{content:'STEP\00a0'}
 .term-sub{font-size:.72rem;font-weight:800;color:var(--sun-deep);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 10px;padding-top:14px;border-top:1px solid rgba(74,59,0,.12)}
 .form-card{background:var(--sun-wash);border:1px solid rgba(254,223,4,.3);border-radius:var(--radius);padding:22px 20px}
 .field{margin-bottom:15px}.field:last-of-type{margin-bottom:0}
@@ -293,7 +298,7 @@ svg.ico{width:22px;height:22px;stroke:var(--green-deep);stroke-width:1.6;fill:no
           <select id="f-org" class="inp sel" onchange="toggleOrgOther()"></select>
           <input id="f-org-other" class="inp" type="text" data-i18n-ph="phOrgOther" placeholder="" style="display:none;margin-top:8px">
           <div class="hint" data-i18n="orgHint">Asosiasi travel tempat agent Anda terdaftar sebagai anggota.</div></div>
-        <div class="row2"><div class="field"><label>Instagram <span class="req">*</span></label><input id="f-ig" class="inp" type="text" placeholder="@username"></div><div class="field"><label>TikTok <span class="req">*</span></label><input id="f-tiktok" class="inp" type="text" placeholder="@username"></div></div>
+        <div class="row2"><div class="field"><label><span data-i18n="fIg">Instagram Perusahaan</span> <span class="req">*</span></label><input id="f-ig" class="inp" type="text" data-i18n-ph="phSosmed" placeholder="@akuntravel"></div><div class="field"><label><span data-i18n="fTt">TikTok Perusahaan</span> <span class="req">*</span></label><input id="f-tiktok" class="inp" type="text" data-i18n-ph="phSosmed" placeholder="@akuntravel"></div></div>
         <div class="field"><label><span data-i18n="fFb">Fanpage Facebook</span> <span class="req">*</span></label><input id="f-fb" class="inp" type="text" data-i18n-ph="phFb" placeholder=""></div>
         <div class="field" style="margin-top:-6px"><div class="hint" data-i18n="sosmedHint">Akun yang akan dipakai untuk posting konten.</div></div>
         <div class="field"><label><span data-i18n="fKota">Asal Kota</span> <span class="req">*</span></label><input id="f-kota" class="inp" type="text" data-i18n-ph="phKota" placeholder=""></div>
@@ -400,21 +405,29 @@ var I18N = {
     termSpecial:'Khusus travel agent yang <b>sudah pernah mengirim tamu ke {brand}</b> dan <b>hanya bekerja sama dengan {brand}</b>.',
     reqHead:'Syarat pendaftaran FFT',
     reqs:[
-      'Travel agent <b>terdaftar sebagai anggota asosiasi resmi</b> (ASITA, ASTINDO, atau asosiasi lainnya) dan mencantumkannya di formulir.',
-      '<b>Follow</b> akun Instagram <b>@freefamtripthailand</b>.',
-      '<b>Like, komentar, dan repost</b> video promosi di akun Instagram <b>@freefamtripthailand</b>.',
-      'Memposting <b>3 video paket {brand}</b> yang disediakan oleh tim {brand}, menggunakan <b>caption dan hashtag</b> yang telah ditentukan. <b>Video tidak boleh dihapus.</b>',
-      'Video diunggah di akun <b>Facebook, Instagram, dan TikTok</b> milik travel agent Anda — <b>ketiganya wajib</b>.',
-      'Setelah mendaftar, <b>tim {brand} akan menghubungi Anda via WhatsApp</b> untuk konfirmasi pendaftaran.',
-      'Agent wajib mengikuti <b>sesi product knowledge online</b> bersama tim {brand}.'
+      {t:'Saat mendaftar', items:[
+        'Mengisi formulir pendaftaran dengan <b>data yang benar dan dapat dipertanggungjawabkan</b>.',
+        'Travel agent <b>terdaftar sebagai anggota asosiasi resmi</b> (ASITA, ASTINDO, atau asosiasi lainnya) dan mencantumkannya di formulir.',
+        '<b>Follow</b> akun Instagram <b>@freefamtripthailand</b>.',
+        '<b>Like, komentar, dan repost</b> video promosi di akun Instagram <b>@freefamtripthailand</b>.'
+      ]},
+      {t:'Setelah mendaftar', items:[
+        '<b>Tim {brand} akan menghubungi Anda via WhatsApp</b> untuk konfirmasi pendaftaran.',
+        'Agent wajib mengikuti <b>sesi product knowledge online</b> bersama tim {brand}.'
+      ]},
+      {t:'Setelah pendaftaran dikonfirmasi', items:[
+        'Memposting <b>3 video paket {brand}</b> yang disediakan oleh tim {brand}, menggunakan <b>caption dan hashtag</b> yang telah ditentukan. <b>Video tidak boleh dihapus.</b>',
+        'Video diunggah di akun <b>Facebook, Instagram, dan TikTok</b> milik travel agent Anda — <b>ketiganya wajib</b>.'
+      ]}
     ],
     secForm:'Isi data pendaftaran',
     fNama:'Nama Lengkap', fAgent:'Nama Travel / Agent', fWa:'No. WhatsApp', fEmail:'Email', fKota:'Asal Kota',
     phNama:'Nama lengkap', phAgent:'Nama perusahaan travel', phKota:'Kota asal',
-    sosmedHint:'Akun Instagram, TikTok, dan Facebook travel agent yang akan dipakai untuk memposting video paket.',
+    sosmedHint:'Gunakan akun resmi travel agent, <b>bukan akun pribadi</b>. Akun ini yang dipakai untuk memposting video paket.',
     fOrg:'Keanggotaan Asosiasi', orgPick:'Pilih asosiasi', orgOther:'Lainnya',
     phOrgOther:'Tulis nama asosiasi', orgHint:'Asosiasi travel tempat agent Anda terdaftar sebagai anggota.',
-    fFb:'Fanpage Facebook', phFb:'Nama atau link fanpage travel',
+    fFb:'Fanpage Facebook Perusahaan', phFb:'Nama atau link fanpage travel',
+    fIg:'Instagram Perusahaan', fTt:'TikTok Perusahaan', phSosmed:'@akuntravel',
     btnSubmit:'Kirim Pendaftaran',
     errIncompleteT:'Data belum lengkap', errIncompleteD:'Lengkapi semua kolom bertanda (*) dengan benar, termasuk asosiasi, Instagram, TikTok, dan Facebook.',
     errTimeoutT:'Server tidak merespon', errTimeoutD:'Coba beberapa saat lagi atau hubungi admin via WhatsApp.',
@@ -424,7 +437,7 @@ var I18N = {
     sTitle:'Pendaftaran terkirim!',
     sSub:'Terima kasih, pendaftaran Anda untuk <b>Fullmoon Fam Trip {p}</b> sudah kami terima.',
     sKodeLabel:'Kode Booking',
-    sNote:'<b>Tim kami akan segera menghubungi Anda</b> via WhatsApp untuk konfirmasi pendaftaran, pengiriman 3 video paket, dan jadwal sesi product knowledge online. Mohon pantau pesan masuk Anda.',
+    sNote:'<b>Tim kami akan segera menghubungi Anda</b> via WhatsApp untuk konfirmasi pendaftaran dan jadwal sesi product knowledge online. Mohon pantau pesan masuk Anda.',
     sWaBtn:'Konfirmasi via WhatsApp',
     sBack:'← Kembali ke jadwal famtrip',
     waMsg:'Halo Admin {brand} 👋\nSaya baru mendaftar Fullmoon Fam Trip Thailand {p}:\n• Kode Booking : {k}\n• Nama : {n}\n• Travel/Agent : {a}\n• WhatsApp : {w}\n• Asosiasi : {o}\n• Instagram : @{ig}\n• TikTok : @{tt}\n• Facebook : {fb}\n• Asal Kota : {c}\n\nMohon info konfirmasi pendaftarannya ya, terima kasih!'
@@ -464,21 +477,29 @@ var I18N = {
     termSpecial:'Only for travel agents who have <b>already sent guests to {brand}</b> and <b>work exclusively with {brand}</b>.',
     reqHead:'FFT registration requirements',
     reqs:[
-      'Your agency is <b>a registered member of an official travel association</b> and states it in the form.',
-      '<b>Follow</b> the Instagram account <b>@freefamtripthailand</b>.',
-      '<b>Like, comment on and repost</b> the promotional video on <b>@freefamtripthailand</b>.',
-      'Post the <b>3 {brand} package videos</b> provided by the {brand} team, using the <b>caption and hashtags</b> supplied. <b>The videos must not be deleted.</b>',
-      'Upload the videos to your agency\u2019s <b>Facebook, Instagram and TikTok</b> accounts — <b>all three are required</b>.',
-      'After you register, <b>the {brand} team will contact you via WhatsApp</b> to confirm your registration.',
-      'Attend an <b>online product knowledge session</b> with the {brand} team.'
+      {t:'When you register', items:[
+        'Fill in the registration form with <b>accurate and verifiable information</b>.',
+        'Your agency is <b>a registered member of an official travel association</b> and states it in the form.',
+        '<b>Follow</b> the Instagram account <b>@freefamtripthailand</b>.',
+        '<b>Like, comment on and repost</b> the promotional video on <b>@freefamtripthailand</b>.'
+      ]},
+      {t:'After you register', items:[
+        '<b>The {brand} team will contact you via WhatsApp</b> to confirm your registration.',
+        'Attend an <b>online product knowledge session</b> with the {brand} team.'
+      ]},
+      {t:'Once your registration is confirmed', items:[
+        'Post the <b>3 {brand} package videos</b> provided by the {brand} team, using the <b>caption and hashtags</b> supplied. <b>The videos must not be deleted.</b>',
+        'Upload the videos to your agency\u2019s <b>Facebook, Instagram and TikTok</b> accounts — <b>all three are required</b>.'
+      ]}
     ],
     secForm:'Registration form',
     fNama:'Full Name', fAgent:'Travel Agency Name', fWa:'WhatsApp Number', fEmail:'Email', fKota:'City',
     phNama:'Your full name', phAgent:'Your travel agency name', phKota:'Your city',
-    sosmedHint:'Your agency\u2019s Instagram, TikTok and Facebook accounts that will be used to post the package videos.',
+    sosmedHint:'Use your agency\u2019s official accounts, <b>not personal accounts</b>. These accounts will be used to post the package videos.',
     fOrg:'Association Membership', orgPick:'Select association', orgOther:'Other',
     phOrgOther:'Type the association name', orgHint:'The travel association your agency is a member of.',
-    fFb:'Facebook Page', phFb:'Your agency\u2019s Facebook page name or link',
+    fFb:'Company Facebook Page', phFb:'Your agency\u2019s Facebook page name or link',
+    fIg:'Company Instagram', fTt:'Company TikTok', phSosmed:'@agencyaccount',
     btnSubmit:'Submit Registration',
     errIncompleteT:'Incomplete data', errIncompleteD:'Please fill in all fields marked (*) correctly, including association, Instagram, TikTok and Facebook.',
     errTimeoutT:'Server not responding', errTimeoutD:'Please try again shortly or contact our admin on WhatsApp.',
@@ -488,7 +509,7 @@ var I18N = {
     sTitle:'Registration submitted!',
     sSub:'Thank you — we have received your registration for <b>Fullmoon Fam Trip {p}</b>.',
     sKodeLabel:'Booking Code',
-    sNote:'<b>Our team will contact you shortly</b> via WhatsApp to confirm your registration, send the 3 package videos and schedule the online product knowledge session. Please keep an eye on your messages.',
+    sNote:'<b>Our team will contact you shortly</b> via WhatsApp to confirm your registration and schedule the online product knowledge session. Please keep an eye on your messages.',
     sWaBtn:'Confirm via WhatsApp',
     sBack:'← Back to famtrip schedule',
     waMsg:'Hello {brand} Admin 👋\nI have just registered for the Fullmoon Fam Trip Thailand {p}:\n• Booking Code : {k}\n• Name : {n}\n• Travel Agency : {a}\n• WhatsApp : {w}\n• Association : {o}\n• Instagram : @{ig}\n• TikTok : @{tt}\n• Facebook : {fb}\n• City : {c}\n\nKindly confirm my registration, thank you!'
@@ -622,8 +643,11 @@ function applyI18n(){
   });
 
   document.getElementById('b4d-tx').innerHTML = t('b4d');
-  document.getElementById('req-list').innerHTML = T.reqs.map(function(r,i){
-    return '<div class="term"><span class="chk">'+(i+1)+'</span><span>'+r.split('{brand}').join(MCFG.brand)+'</span></div>';
+  var n=0;
+  document.getElementById('req-list').innerHTML = T.reqs.map(function(g,gi){
+    return '<div class="req-phase"><span class="ph-step">'+(gi+1)+'</span>'+g.t+'</div>'+g.items.map(function(r){
+      n++; return '<div class="term"><span class="chk">'+n+'</span><span>'+r.split('{brand}').join(MCFG.brand)+'</span></div>';
+    }).join('');
   }).join('');
   var sel=document.getElementById('f-org');
   sel.innerHTML='<option value="">'+t('orgPick')+'</option>'+MCFG.orgs.map(function(o){return '<option>'+o+'</option>';}).join('')+'<option value="__other">'+t('orgOther')+'</option>';
