@@ -86,6 +86,9 @@ svg.ico{width:22px;height:22px;stroke:var(--green-deep);stroke-width:1.6;fill:no
 .mid-cta{margin:22px 22px 0;background:linear-gradient(150deg,var(--green),var(--green-deep));border-radius:var(--radius);padding:24px 22px;text-align:center;color:#fff;box-shadow:0 12px 30px rgba(33,192,99,.3)}
 .mid-cta h3{font-size:1.3rem;font-weight:700;letter-spacing:-.02em;line-height:1.2}
 .mid-cta p{font-size:.88rem;opacity:.92;margin-top:8px;line-height:1.5}
+.mid-cta .no-flight{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:5px 12px;border-radius:50px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);font-size:.78rem;font-weight:700}
+.mid-cta .no-flight svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mid-cta .no-flight+.btn{display:flex;width:max-content;margin:14px auto 0}
 .mid-cta .btn{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:14px 28px;background:var(--sun);color:var(--sun-deep);border:none;border-radius:14px;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.15);transition:transform .2s ease}
 .mid-cta .btn:active{transform:scale(.96)}
 .section{padding:8px 22px 0}
@@ -225,7 +228,7 @@ html[lang=en] .req-phase .ph-step:before{content:'STEP\00a0'}
       <div class="sp-d" id="d-special-desc">—</div>
     </div>
 
-    <div class="mid-cta" style="margin-top:22px"><h3 id="cta-title">—</h3><p id="cta-desc">—</p><button class="btn" onclick="scrollForm()" data-i18n="ctaBtn">Daftar Sekarang →</button></div>
+    <div class="mid-cta" style="margin-top:22px"><h3 id="cta-title">—</h3><p id="cta-desc">—</p><div class="no-flight"><svg viewBox="0 0 24 24"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg><span data-i18n="noFlight">Tiket pesawat tidak termasuk</span></div><button class="btn" onclick="scrollForm()" data-i18n="ctaBtn">Daftar Sekarang →</button></div>
 
     <div class="section">
       <div class="sec-title"><span class="bar"></span><h2 data-i18n="secBenefit">Benefit yang didapatkan</h2></div>
@@ -390,7 +393,8 @@ var I18N = {
     secBenefit:'Benefit yang didapatkan',
     b1t:'Inspeksi Langsung', b1d:'Lihat sendiri hotel &amp; destinasi yang akan Anda <b>tawarkan ke klien</b>',
     b2t:'Konten Promosi',   b2d:'Pulang bawa foto &amp; video <b>siap pakai</b> untuk materi jualan Anda',
-    b3t:'Gratis Penuh',     b3d:'Hotel, transport, makan, tiket masuk — <b>tanpa biaya program</b>',
+    b3t:'Gratis Penuh',     b3d:'Hotel, transport, makan, tiket masuk — <b>tanpa biaya program</b>. Tiket pesawat ditanggung peserta.',
+    noFlight:'Tiket pesawat tidak termasuk',
     b4t:'Networking',       b4d:'<b>Koneksi langsung</b> dengan tim {brand} &amp; sesama travel agent',
     itinHead:'Itinerary', itinDays:'Itinerary {n} hari',
     dayLabel:'Hari', infoLabel:'Info', itinSoon:'Itinerary segera diumumkan',
@@ -462,7 +466,8 @@ var I18N = {
     secBenefit:'What you get',
     b1t:'On-Site Inspection', b1d:'See for yourself the hotels &amp; destinations you will <b>offer to your clients</b>',
     b2t:'Promo Content',     b2d:'Go home with <b>ready-to-use</b> photos &amp; videos for your sales materials',
-    b3t:'Fully Free',        b3d:'Hotel, transport, meals, entrance tickets — <b>no program fee</b>',
+    b3t:'Fully Free',        b3d:'Hotel, transport, meals, entrance tickets — <b>no program fee</b>. Airfare is paid by participants.',
+    noFlight:'Airfare not included',
     b4t:'Networking',        b4d:'<b>Direct connection</b> with the {brand} team &amp; fellow travel agents',
     itinHead:'Itinerary', itinDays:'{n}-day itinerary',
     dayLabel:'Day', infoLabel:'Info', itinSoon:'Itinerary to be announced soon',
