@@ -381,7 +381,7 @@ var I18N = {
     landingFoot:'Khusus mitra travel agent · Kuota terbatas setiap jadwal',
     departure:'Jadwal',
     programLabel:'Program',
-    seatLeft:'Sisa {n} kursi', seatFull:'Kuota penuh',
+    seatLeft:'Sisa {n} kursi', seatFull:'Segera daftar',
     ctaTitle:'Kursi terbatas, hanya {seat} orang',
     ctaDesc:'Terbatas hanya untuk {seat} travel agent pertama.',
     ctaTitleSp:'Khusus TOP {seat} Travel Agent',
@@ -454,7 +454,7 @@ var I18N = {
     landingFoot:'For travel agent partners only · Limited seats per schedule',
     departure:'Schedule',
     programLabel:'Program',
-    seatLeft:'{n} seats left', seatFull:'Fully booked',
+    seatLeft:'{n} seats left', seatFull:'Register soon',
     ctaTitle:'Limited seats — only {seat} people',
     ctaDesc:'Open to the first {seat} travel agents only.',
     ctaTitleSp:'Exclusive for TOP {seat} Travel Agents',
@@ -676,7 +676,8 @@ var chev='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-widt
 function seatBadge(k){
   if(!SEATS||!SEATS[k]) return '';
   var s=SEATS[k].sisa;
-  if(s<=0) return '<span class="seat full">'+t('seatFull')+'</span>';
+  // Kuota hanya pemicu urgensi: pendaftaran tidak pernah ditutup.
+  if(s<=0) return '<span class="seat low">'+t('seatFull')+'</span>';
   return '<span class="seat'+(s<=5?' low':'')+'">'+t('seatLeft',{n:s})+'</span>';
 }
 function renderList(){
